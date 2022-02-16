@@ -1,9 +1,9 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from venmo_api import Client
+from get_docker_secret import get_docker_secret
 import os
 import math
-import logging
 
 # getting the current time in PST
 local_tz = ZoneInfo("US/Pacific")
@@ -11,7 +11,7 @@ utc_time = datetime.utcnow()
 local_time = utc_time.astimezone(local_tz)
 
 # authenticating with venmo API
-client = Client(access_token = os.environ.get('VENMO_API_TOKEN'))
+client = Client(access_token = get_docker_secret("venmo_api_key"))
 
 # dict of user_ids to usernames
 # hopefully I can refactor this into a web dashboard
@@ -26,15 +26,6 @@ user_dict = {
 # the amount that I have to charge
 amount = 15.99
 
-# setting up the logger!
-logging.basicConfig(
-    filename="./logs/venmoscription.log",
-    filemode='a',
-    format='%(asctime)s %(levelname)-8s %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    level=logging.INFO
-)
-
 # function to check if the users I'm charging are also my friends on venmo
 def users_are_friends(user_ids):
     """
@@ -44,6 +35,8 @@ def users_are_friends(user_ids):
     :return: <bool> true if all are friends, false if not
     """
 
+    print("checking if users are friends on venmo...")
+    
     friends = client.user.get_user_friends_list(
         user_id = client.my_profile().id
     )
@@ -61,12 +54,25 @@ def users_are_friends(user_ids):
     # TODO: send me an email if ID not in friends list
     if len(user_ids_cpy) != 0:
         for user_id in user_ids_cpy:
-            logging.error(f"{user_id} not in your friends list!")    
+            # log that the user is not my friend on venmo
+            print(f"User [{user_id} : {user_dict[user_id]}] is not in your venmo friends list!")
+    else:
+        print("all good!")
 
     return len(user_ids_cpy) == 0
 
 # for rounding up to the nearest cent
 def round_up(money):
+    """
+    round up money to the nearest cent
+    ex: 
+    $2.6666 => $2.67
+    $3.1111 => $3.12
+
+    :param money: <float> amount of money in dollars
+
+    :return: <float> the money rounded up to the nearest cent
+    """
     money *= 100
     money = math.ceil(money)
     return money / 100
@@ -74,23 +80,23 @@ def round_up(money):
 # for my purposes only, only charge for spotify
 # on every 27th of the month
 if local_time.day == 27:
-    logging.info("Today is the 27th!")
+    # log that it is the 27th
+    print("It is the 27th!!!!")
+
     user_ids = list(user_dict.keys())
 
     amount_per_person = round_up(amount / len(user_ids))
-    if users_are_friends(user_ids):
-        for user_id in user_ids:
-            client.payment.request_money(
-                amount_per_person, 
-                "🤖beep boop🤖 spotify premium for family", 
-                user_id
-            )
-
-            logging.info(f"charged {client.user.get_user(user_id).username} \${amount_per_person}")
-    else:
-        logging.error('1 or more of the users are not in your friends list')
-        raise ValueError("1 or more of the users are not in your friends list")
+    
+    # we'll deal with what happpens if a person is not a friend later...
+    are_friends = users_are_friends(user_ids)
+    
+    for user_id in user_ids:
+        client.payment.request_money(
+            amount_per_person, 
+            "🤖beep boop🤖 spotify premium for family", 
+            user_id
+        )
 else:
-    logging.info("Today is not the 27th")
+    print("It is not the 27th")
 
 print("fin")

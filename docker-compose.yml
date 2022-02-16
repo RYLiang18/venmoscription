@@ -1,10 +1,14 @@
 version: '3.8'
 
+secrets:
+  venmo_api_key:
+    file: ./secrets/venmo_api_token.txt
+
 services:
   app:
     build: ./app
-    env_file:
-      - .env
+    secrets:
+      - venmo_api_key
     volumes:
       - logs:/app/logs
 volumes:
