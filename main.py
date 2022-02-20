@@ -1,7 +1,7 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from venmo_api import Client
-from get_docker_secret import get_docker_secret
+import os
 import math
 
 # getting the current time in PST
@@ -10,7 +10,7 @@ utc_time = datetime.utcnow()
 local_time = utc_time.astimezone(local_tz)
 
 # authenticating with venmo API
-client = Client(access_token = get_docker_secret("venmo_api_key"))
+client = Client(access_token = os.environ.get('venmo_token'))
 
 # dict of user_ids to usernames
 # hopefully I can refactor this into a web dashboard

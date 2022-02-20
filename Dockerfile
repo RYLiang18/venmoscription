@@ -5,10 +5,8 @@ USER app
 
 WORKDIR /app
 
-# this is so that we have access to venmoscription.logs volume
-RUN mkdir logs 
-
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
-ENTRYPOINT ["python", "main.py"]
+
+ENTRYPOINT ["python", "-u", "main.py"]
