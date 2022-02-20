@@ -5,10 +5,10 @@ USER app
 
 WORKDIR /app
 
-# this is so that we have access to venmoscription.logs volume
-RUN mkdir logs 
-
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
-ENTRYPOINT ["python", "main.py"]
+
+ENTRYPOINT ["python", "-u", "main.py"]
+
+# docker run -e venmo_token=$(cat ./secrets/venmo_api_token.txt ) venmoscription
