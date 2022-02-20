@@ -10,5 +10,3 @@ RUN pip install -r requirements.txt
 COPY . .
 
 ENTRYPOINT ["python", "-u", "main.py"]
-
-# docker run -e venmo_token=$(cat ./secrets/venmo_api_token.txt ) venmoscription
