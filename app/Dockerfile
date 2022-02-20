@@ -1,5 +1,3 @@
-# in development
-
 FROM python:3.9.10-alpine3.15
 
 RUN addgroup app && adduser -S -G app app

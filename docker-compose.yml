@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 secrets:
   venmo_api_key:
@@ -9,8 +9,3 @@ services:
     build: ./app
     secrets:
       - venmo_api_key
-    volumes:
-      - logs:/app/logs
-volumes:
-  logs:
-    

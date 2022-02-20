@@ -2,7 +2,6 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from venmo_api import Client
 from get_docker_secret import get_docker_secret
-import os
 import math
 
 # getting the current time in PST
