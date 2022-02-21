@@ -99,3 +99,9 @@ else:
     print("It is not the 27th")
 
 print("fin")
+
+# //// primitive logging /////////////////////
+# with open('./logs/venmoscription_log.txt', "a") as f:
+#     f.write(
+#         f"{local_time} : RAN!\n"
+#     )
