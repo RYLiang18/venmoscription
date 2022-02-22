@@ -9,5 +9,3 @@ venmo_token_loc="/home/giich/programming_projects/venmoscription/secrets/venmo_a
 docker build -t venmoscription "$venmoscription_dir"
 # docker run -v "$log_location":/app/logs:Z -e venmo_token=$(cat "$venmo_token_loc" ) venmoscription
 docker run -e venmo_token=$(cat "$venmo_token_loc" ) venmoscription
-
-exit 0
