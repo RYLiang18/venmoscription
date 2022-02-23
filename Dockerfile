@@ -4,7 +4,6 @@ RUN addgroup app && adduser -S -G app app
 USER app
 
 WORKDIR /app
-RUN mkdir logs
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
