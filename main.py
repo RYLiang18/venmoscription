@@ -89,12 +89,12 @@ if local_time.day == 27:
     # we'll deal with what happpens if a person is not a friend later...
     are_friends = users_are_friends(user_ids)
     
-    for user_id in user_ids:
-        client.payment.request_money(
-            amount_per_person, 
-            "🤖beep boop🤖 spotify premium for family", 
-            user_id
-        )
+    # for user_id in user_ids:
+    #     client.payment.request_money(
+    #         amount_per_person, 
+    #         "🤖beep boop🤖 spotify premium for family", 
+    #         user_id
+    #     )
 else:
     print("It is not the 27th")
 
