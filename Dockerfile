@@ -7,7 +7,7 @@ RUN mkdir -p ${HOME}
 WORKDIR ${HOME}
 
 RUN addgroup app && adduser -S -G app app
-USER hints
+USER app
 
 
 
