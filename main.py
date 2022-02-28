@@ -84,7 +84,8 @@ if local_time.day == 27:
 
     user_ids = list(user_dict.keys())
 
-    amount_per_person = round_up(amount / len(user_ids))
+    # +1 for me
+    amount_per_person = round_up(amount / (len(user_ids) + 1))
     
     # we'll deal with what happpens if a person is not a friend later...
     are_friends = users_are_friends(user_ids)
@@ -92,16 +93,11 @@ if local_time.day == 27:
     for user_id in user_ids:
         client.payment.request_money(
             amount_per_person, 
-            "🤖beep boop🤖 spotify premium for family", 
+            "recurring request - spotify premium for family", 
             user_id
         )
+        print(f"charged {user_dict[user_id]} ${amount_per_person}")
 else:
     print("It is not the 27th")
 
 print("fin")
-
-# //// primitive logging /////////////////////
-# with open('./logs/venmoscription_log.txt', "a") as f:
-#     f.write(
-#         f"{local_time} : RAN!\n"
-#     )
