@@ -15,7 +15,7 @@ client = Client(access_token = os.environ.get('venmo_token'))
 # dict of user_ids to usernames
 # hopefully I can refactor this into a web dashboard
 user_dict = {
-    '2507792346775552606': 'yourtriggered', 
+    '2556409916948480085': 'hannah-ai', 
     '2828373562753024707': 'mangekyomaster', 
     '3151324359163904454': 'yu_xxincheng', 
     '2313403662073856986': 'axie846', 
@@ -36,29 +36,28 @@ def users_are_friends(user_ids):
 
     print("checking if users are friends on venmo...")
     
+    # algo: 
+    # get list of my friends' IDs
+    # iterate through <user_ids> and check if each <user_id> is in the list of friend IDs
+
     friends = client.user.get_user_friends_list(
         user_id = client.my_profile().id
     )
-
-    # algo:
-    # iterate through friends list, and if i see an ID that's in
-    # my to-charge list, I remove it.  
-    user_ids_cpy = set(user_ids)
-    for friend in friends:
-        if friend.id in user_ids:
-            user_ids_cpy.remove(friend.id)
+    friends_ids = [friend.id for friend in friends]
     
-    # if there are any IDs that are left, that means they are not in
-    # my friends list. Log it, and maybe send me an email
-    # TODO: send me an email if ID not in friends list
-    if len(user_ids_cpy) != 0:
-        for user_id in user_ids_cpy:
-            # log that the user is not my friend on venmo
+    ret = True
+    for user_id in user_ids:
+        if user_id not in friends_ids:
             print(f"User [{user_id} : {user_dict[user_id]}] is not in your venmo friends list!")
+            ret = False
+    
+    if ret == True:
+        print("all good")
     else:
-        print("all good!")
+        # TODO: send me an email if ID not in friends list
+        pass
 
-    return len(user_ids_cpy) == 0
+    return ret
 
 # for rounding up to the nearest cent
 def round_up(money):
