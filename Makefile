@@ -3,5 +3,9 @@ venv/setup:
 	./venv/bin/pip install --upgrade pip pip-tools
 	touch venv/setup
 
+venv/touchfile: venv/setup requirements.txt
+	./venv/bin/pip install -r requirements.txt
+	touch venv/touchfile
+
 requirements.txt: requirements.in
 	./venv/bin/pip-compile --upgrade requirements.in
