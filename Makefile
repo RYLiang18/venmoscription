@@ -9,3 +9,7 @@ venv/touchfile: venv/setup requirements.txt
 
 requirements.txt: requirements.in
 	./venv/bin/pip-compile --upgrade requirements.in
+
+.PHONY: format
+format:
+	./venv/bin/black --target-version py313 venmoscription
