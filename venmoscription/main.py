@@ -63,4 +63,3 @@ for service, details in venmo_config.items():
 
 if len(not_friends) > 0:
     raise RuntimeError(f"{not_friends} are not my friends on venmo")
-raise RuntimeError("test error")

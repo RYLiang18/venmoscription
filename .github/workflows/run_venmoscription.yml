@@ -1,11 +1,10 @@
-name: Test Venmoscription
+name: Monthly Venmoscription
 on:
   schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+    - cron: '0 0 1 * *'
 
 jobs:
-  test-venmoscription:
+  run-venmoscription:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -19,8 +18,8 @@ jobs:
       - name: Setup venv and install dependencies
         run: make venv/touchfile
       
-      - name: Run Venmoscription test
-        run: ./venv/bin/python -m venmoscription.main test
+      - name: Run Venmoscription
+        run: ./venv/bin/python -m venmoscription.main
         env:
           VENMO_TOKEN: ${{ secrets.VENMO_TOKEN }}
 
