@@ -1,2 +1,4 @@
 # **Venmoscription**
-Venmoscription is a script I created to charge friends for our Spotify Premium for Family plan. Currently, it is hosted on Heroku and is set to run daily at 1 AM PST every day using Heroku Scheduler.
+script to venmo request for spotify premium for family and youtube premium for family.
+
+runs once per month through github actions.
