@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Check if actor is authorized
         run: |
-          if [ "${{ github.actor }}" != "your-username" ]; then
+          if [ "${{ github.actor }}" != "RYLiang18" ]; then
             echo "❌ Unauthorized user: ${{ github.actor }}"
             exit 1
           fi
