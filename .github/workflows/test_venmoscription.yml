@@ -8,6 +8,13 @@ jobs:
   test-venmoscription:
     runs-on: ubuntu-latest
     steps:
+      - name: Check if actor is authorized
+        run: |
+          if [ "${{ github.actor }}" != "your-username" ]; then
+            echo "❌ Unauthorized user: ${{ github.actor }}"
+            exit 1
+          fi
+      
       - name: Checkout repository
         uses: actions/checkout@v4
         
