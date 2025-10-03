@@ -1,0 +1,26 @@
+name: Test Venmoscription
+on:
+  workflow_dispatch:
+
+jobs:
+  test-venmo-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+      
+      - name: Setup venv and install dependencies
+        run: make venv/touchfile
+      
+      - name: Run Venmoscription test
+        run: ./venv/bin/python -m venmoscription.main test
+        env:
+          VENMO_TOKEN: ${{ secrets.VENMO_TOKEN }}
+
+
+      

@@ -1,9 +1,17 @@
 import math
 import json
+import sys
+import logging
 import os
 from datetime import datetime
 from venmo_api import Client
 from venmoscription.default_config import settings
+
+logging.basicConfig(
+    level=logging.INFO,  # Show INFO messages and above
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 client = Client(access_token=settings.venmo_token)
 friend_ids = [
@@ -34,6 +42,7 @@ with open(venmo_config_path, "r") as f:
 now = datetime.now()
 curr_month = f"{now.month}/{now.year}"
 
+test = sys.argv[1].lower() == "test"
 not_friends = set()
 for service, details in venmo_config.items():
     amt_per_person = round_up(details["total"] / len(details["usernames"]))
@@ -47,7 +56,10 @@ for service, details in venmo_config.items():
             continue
         service_name = service.replace("_", " ")
         description = f"{service_name} {curr_month}"
-        client.payment.request_money(amt_per_person, description, user_id)
+        if test:
+            logger.info(msg=f"description:\"{description}\" username:{username} user_id:{user_id}")
+        else:
+            client.payment.request_money(amt_per_person, description, user_id)
 
 if len(not_friends) > 0:
     raise RuntimeError(f"{not_friends} are not my friends on venmo")
