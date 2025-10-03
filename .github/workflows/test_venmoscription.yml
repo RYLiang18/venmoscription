@@ -12,7 +12,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'
+          python-version: '3.13.7'
       
       - name: Setup venv and install dependencies
         run: make venv/touchfile
